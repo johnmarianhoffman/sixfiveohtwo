@@ -5,6 +5,8 @@
 #include <opcodes.h>
 #include <vector>
 
+class Bus;
+
 class Processor {
 private:
 	uint8_t accumulator;
@@ -14,9 +16,11 @@ private:
 	uint8_t stack_pointer;
 	bool stack_pointer_carry;
 	uint8_t process_status_register;
+	
+	Bus * bus;
 
 public:
-	Processor();
+	Processor(){};
 	~Processor();
 	
 	uint8_t A(){ return accumulator; }
@@ -29,6 +33,17 @@ public:
 	bool SPC(){ return stack_pointer_carry; }
 	uint8_t Status(){ return process_status_register; }
 
+	void ConnectBus(Bus * in_bus) {
+		bus = in_bus;
+	}
+
+	uint8_t Read(uint16_t addr){
+		return bus->Read(addr);
+	}
+
+	void Write(uint16_t addr, uint8_t data){
+		bus->Write(addr, data);
+	}
 
 private:
 
@@ -447,7 +462,7 @@ private:
 		{0xF, 0xD, "SBC", &Processor::_SBC, &Processor::_AbsoluteX, 3, 4}, // *
 		{0xF, 0xE, "INC", &Processor::_INC, &Processor::_AbsoluteX, 3, 7},
 		{0xF, 0xF, "XXX", &Processor::_XXX, &Processor::_AddrXXX, 0, 0},
-	};		
-};
+	};
 
-Processor::Processor(){}
+	
+};
