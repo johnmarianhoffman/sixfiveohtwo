@@ -2,6 +2,7 @@
 #include "olcPixelGameEngine.h"
 
 #include <processor.h>
+#include <bus.h>
 
 // Override base class with your custom functionality
 class Visual6502 : public olc::PixelGameEngine
